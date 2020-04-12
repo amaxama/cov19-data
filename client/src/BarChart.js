@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import {
-    BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Label
+    BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer
 } from 'recharts';
 import _ from 'lodash';
 
@@ -49,7 +49,6 @@ class Example extends PureComponent {
 
     fetchMnData = async () => {
         const response = await fetch('/api/data?url=https://www.health.state.mn.us/diseases/coronavirus/situation.html');
-        console.log("got response");
         const body = await response.json();
 
         if (response.status !== 200) {
@@ -60,7 +59,6 @@ class Example extends PureComponent {
 
     fetchIlData = async () => {
         const response = await fetch('/api/ilData?url=https://en.wikipedia.org/wiki/2020_coronavirus_pandemic_in_Illinois');
-        console.log("got response");
         const body = await response.json();
 
         if (response.status !== 200) {
@@ -71,7 +69,6 @@ class Example extends PureComponent {
 
     fetchMergedData = async () => {
         const ilResponse = await fetch('/api/data?url=https://www.health.state.mn.us/diseases/coronavirus/situation.html');
-        console.log("got response");
         const ilBody = await ilResponse.json();
 
         if (ilResponse.status !== 200) {
@@ -80,7 +77,6 @@ class Example extends PureComponent {
         const ilData = ilBody.data;
 
         const mnResponse = await fetch('/api/ilData?url=https://en.wikipedia.org/wiki/2020_coronavirus_pandemic_in_Illinois');
-        console.log("got response");
         const mnBody = await mnResponse.json();
 
         if (mnResponse.status !== 200) {
@@ -88,34 +84,17 @@ class Example extends PureComponent {
         }
         const mnData = mnBody.data;
 
-        console.log(mnData.slice(0, mnData.length));
-        console.log(ilData.slice(0, ilData.length));
         const merged = _.mergeWith(mnData, ilData);
-        console.log(merged.slice(0, merged.length));
         const mData = mnData.concat(ilData);
-        console.log("mdata: " + mData);
         mData.filter(function (v) {
             return this[v.name] ?
                 Object.assign(this[v.name], v) :
                 (this[v.name] = v);
         }, {});
-        console.log(mnData);
+        // console.log(mnData);
         return mnData;
     };
 
-
-
-
-    // fetchMergedData = () => {
-    //     var mData = this.state.mnData.concat(this.state.ilData);
-    //     const newData = mData.filter(function(v) {
-    //         return this[v.name]?
-    //           !Object.assign(this[v.name], v):
-    //           (this[v.name] = v);
-    //       }, {});
-    //     console.log(newData);
-    //     return newData;
-    // }
 
     render() {
         return (
@@ -124,9 +103,8 @@ class Example extends PureComponent {
                 <hr/>
                 <div className="container">
                     <h3>MN Data</h3>
+                    <ResponsiveContainer width="95%" height={300}>
                     <BarChart
-                        width={750}
-                        height={300}
                         data={this.state.mnData}
                         margin={{
                             top: 5, right: 30, left: 20, bottom: 5,
@@ -140,11 +118,11 @@ class Example extends PureComponent {
                         <Bar dataKey="MN_new" fill="#900c3f" name="New" />
                         <Bar dataKey="MN_total" fill="#511845" name="Total" />
                     </BarChart>
+</ResponsiveContainer>
                     <br />
                     <h3>IL Data</h3>
+                    <ResponsiveContainer width="95%" height={300}>
                     <BarChart
-                        width={750}
-                        height={300}
                         data={this.state.ilData}
                         margin={{
                             top: 5, right: 30, left: 20, bottom: 5,
@@ -158,11 +136,11 @@ class Example extends PureComponent {
                         <Bar dataKey="IL_new" fill="#82ca9d" name="New" />
                         <Bar dataKey="IL_total" fill="#008080" name="Total" />
                     </BarChart>
+                    </ResponsiveContainer>
                     <br />
                     <h3>IL & MN Data</h3>
+                    <ResponsiveContainer width="95%" height={500}>
                     <BarChart
-                        width={7500}
-                        height={300}
                         data={this.state.mergedData}
                         margin={{
                             top: 5, right: 30, left: 20, bottom: 5,
@@ -178,6 +156,7 @@ class Example extends PureComponent {
                         <Bar dataKey="MN_total" fill="#511845" name="MN Total" />
                         <Bar dataKey="IL_total" fill="#008080" name="IL Total" />
                     </BarChart>
+                    </ResponsiveContainer>
                 </div>
             </div>
         );
