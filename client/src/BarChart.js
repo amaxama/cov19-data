@@ -3,6 +3,10 @@ import {
     BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer
 } from 'recharts';
 import _ from 'lodash';
+import BackgroundSlider from 'react-background-slider';
+import image1 from './assets/Attach167853_20200412_135908.jpg'
+import image2 from './assets/Attach167856_20200412_135948.jpg'
+import image3 from './assets/Attach167858_20200412_135955.jpg'
 
 
 class CustomizedAxisTick extends PureComponent {
@@ -99,65 +103,72 @@ class Example extends PureComponent {
     render() {
         return (
             <div>
-                <h1>Covid19 Cases</h1>
-                <hr/>
-                <div className="container">
-                    <h3>MN Data</h3>
-                    <ResponsiveContainer width="95%" height={300}>
-                    <BarChart
-                        data={this.state.mnData}
-                        margin={{
-                            top: 5, right: 30, left: 20, bottom: 5,
-                        }}
-                    >
-                        <CartesianGrid strokeDasharray="3 3" />
-                        <XAxis dataKey="name" />
-                        <YAxis label={{ value: 'Cases', angle: -90, position: 'insideLeft' }} />
-                        <Tooltip />
-                        <Legend />
-                        <Bar dataKey="MN_new" fill="#900c3f" name="New" />
-                        <Bar dataKey="MN_total" fill="#511845" name="Total" />
-                    </BarChart>
-</ResponsiveContainer>
-                    <br />
-                    <h3>IL Data</h3>
-                    <ResponsiveContainer width="95%" height={300}>
-                    <BarChart
-                        data={this.state.ilData}
-                        margin={{
-                            top: 5, right: 30, left: 20, bottom: 5,
-                        }}
-                    >
-                        <CartesianGrid strokeDasharray="3 3" />
-                        <XAxis dataKey="name" />
-                        <YAxis label={{ value: 'Cases', angle: -90, position: 'insideLeft' }} />
-                        <Tooltip />
-                        <Legend />
-                        <Bar dataKey="IL_new" fill="#82ca9d" name="New" />
-                        <Bar dataKey="IL_total" fill="#008080" name="Total" />
-                    </BarChart>
-                    </ResponsiveContainer>
-                    <br />
-                    <h3>IL & MN Data</h3>
-                    <ResponsiveContainer width="95%" height={500}>
-                    <BarChart
-                        data={this.state.mergedData}
-                        margin={{
-                            top: 5, right: 30, left: 20, bottom: 5,
-                        }}
-                    >
-                        <CartesianGrid strokeDasharray="3 3" />
-                        <XAxis dataKey="name" height={60} tick={<CustomizedAxisTick />} />
-                        <YAxis label={{ value: 'Cases', angle: -90, position: 'insideLeft' }} />
-                        <Tooltip />
-                        <Legend />
-                        <Bar dataKey="MN_new" fill="#900c3f" name="MN New" />
-                        <Bar dataKey="IL_new" fill="#82ca9d" name="IL New" />
-                        <Bar dataKey="MN_total" fill="#511845" name="MN Total" />
-                        <Bar dataKey="IL_total" fill="#008080" name="IL Total" />
-                    </BarChart>
-                    </ResponsiveContainer>
+                <div>
+                    <h1>Covid19 Cases</h1>
+                    <hr />
+                    <div className="container">
+                        <h3>MN Data</h3>
+                        <ResponsiveContainer width="95%" height={300}>
+                            <BarChart
+                                data={this.state.mnData}
+                                margin={{
+                                    top: 5, right: 30, left: 20, bottom: 5,
+                                }}
+                            >
+                                <CartesianGrid strokeDasharray="3 3" />
+                                <XAxis dataKey="name" />
+                                <YAxis label={{ value: 'Cases', angle: -90, position: 'insideLeft' }} />
+                                <Tooltip />
+                                <Legend />
+                                <Bar dataKey="MN_new" fill="#900c3f" name="New" />
+                                <Bar dataKey="MN_total" fill="#511845" name="Total" />
+                            </BarChart>
+                        </ResponsiveContainer>
+                        <br />
+                        <h3>IL Data</h3>
+                        <ResponsiveContainer width="95%" height={300}>
+                            <BarChart
+                                data={this.state.ilData}
+                                margin={{
+                                    top: 5, right: 30, left: 20, bottom: 5,
+                                }}
+                            >
+                                <CartesianGrid strokeDasharray="3 3" />
+                                <XAxis dataKey="name" />
+                                <YAxis label={{ value: 'Cases', angle: -90, position: 'insideLeft' }} />
+                                <Tooltip />
+                                <Legend />
+                                <Bar dataKey="IL_new" fill="#82ca9d" name="New" />
+                                <Bar dataKey="IL_total" fill="#008080" name="Total" />
+                            </BarChart>
+                        </ResponsiveContainer>
+                        <br />
+                        <h3>IL & MN Data</h3>
+                        <ResponsiveContainer width="95%" height={500}>
+                            <BarChart
+                                data={this.state.mergedData}
+                                margin={{
+                                    top: 5, right: 30, left: 20, bottom: 5,
+                                }}
+                            >
+                                <CartesianGrid strokeDasharray="3 3" />
+                                <XAxis dataKey="name" height={60} tick={<CustomizedAxisTick />} />
+                                <YAxis label={{ value: 'Cases', angle: -90, position: 'insideLeft' }} />
+                                <Tooltip />
+                                <Legend />
+                                <Bar dataKey="MN_new" fill="#900c3f" name="MN New" />
+                                <Bar dataKey="IL_new" fill="#82ca9d" name="IL New" />
+                                <Bar dataKey="MN_total" fill="#511845" name="MN Total" />
+                                <Bar dataKey="IL_total" fill="#008080" name="IL Total" />
+                            </BarChart>
+                        </ResponsiveContainer>
+                    </div>
                 </div>
+                <BackgroundSlider
+                    images={[image1, image2, image3]}
+                    duration={3}
+                    transition={1}
+                />
             </div>
         );
     }
