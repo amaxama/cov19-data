@@ -58,7 +58,7 @@ async function getIlData(row, index, arr) {
 
 app.get('/api/ilData', async (req, res) => {
     // console.log("made it to IL");
-    const browser = await puppeteer.launch();
+    const browser = await puppeteer.launch({ args: ['--no-sandbox'] });
     const page = await browser.newPage();
     await page.goto(req.query.url);
 
@@ -89,7 +89,7 @@ app.get('/api/data', async (req, res) => {
     // scrapeMnData(req.query.url, res)
     // console.log("made it!");
 
-    const browser = await puppeteer.launch();
+    const browser = await puppeteer.launch({ args: ['--no-sandbox'] });
     const page = await browser.newPage();
     await page.goto(req.query.url);
     
@@ -163,7 +163,7 @@ function logCases(cases) {
 }
 
 async function scrapeIlData(url) {
-    const browser = await puppeteer.launch();
+    const browser = await puppeteer.launch({ args: ['--no-sandbox'] });
     const page = await browser.newPage();
     await page.goto(url);
 
@@ -194,7 +194,7 @@ function getDayData(dayString, index, arr) {
 }
 
 async function scrapeMnData(url, res) {
-    const browser = await puppeteer.launch();
+    const browser = await puppeteer.launch({ args: ['--no-sandbox'] });
     const page = await browser.newPage();
     await page.goto(url);
 
