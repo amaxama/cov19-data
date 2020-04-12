@@ -7,17 +7,17 @@ import _ from 'lodash';
 
 class CustomizedAxisTick extends PureComponent {
     render() {
-      const {
-        x, y, stroke, payload,
-      } = this.props;
-  
-      return (
-        <g transform={`translate(${x},${y})`}>
-          <text x={0} y={0} dy={16} textAnchor="end" fill="#666" transform="rotate(-90)">{payload.value}</text>
-        </g>
-      );
+        const {
+            x, y, stroke, payload,
+        } = this.props;
+
+        return (
+            <g transform={`translate(${x},${y})`}>
+                <text x={0} y={0} dy={16} textAnchor="end" fill="#666" transform="rotate(-90)">{payload.value}</text>
+            </g>
+        );
     }
-  }
+}
 
 
 class Example extends PureComponent {
@@ -39,12 +39,12 @@ class Example extends PureComponent {
             .then(res => console.log("response: " + res))
             .catch(err => console.log(err));
         this.fetchMergedData()
-            .then(res => this.setState({mergedData: res }))
+            .then(res => this.setState({ mergedData: res }))
             .then(res => console.log("response: " + res))
             .catch(err => console.log(err));
-        
-        
-        
+
+
+
     }
 
     fetchMnData = async () => {
@@ -52,7 +52,7 @@ class Example extends PureComponent {
         console.log("got response");
         const body = await response.json();
 
-        if(response.status !== 200) {
+        if (response.status !== 200) {
             throw Error(body.message)
         }
         return body;
@@ -63,7 +63,7 @@ class Example extends PureComponent {
         console.log("got response");
         const body = await response.json();
 
-        if(response.status !== 200) {
+        if (response.status !== 200) {
             throw Error(body.message)
         }
         return body;
@@ -74,7 +74,7 @@ class Example extends PureComponent {
         console.log("got response");
         const ilBody = await ilResponse.json();
 
-        if(ilResponse.status !== 200) {
+        if (ilResponse.status !== 200) {
             throw Error(ilBody.message)
         }
         const ilData = ilBody.data;
@@ -83,22 +83,22 @@ class Example extends PureComponent {
         console.log("got response");
         const mnBody = await mnResponse.json();
 
-        if(mnResponse.status !== 200) {
+        if (mnResponse.status !== 200) {
             throw Error(mnBody.message)
         }
         const mnData = mnBody.data;
 
-        console.log(mnData.slice(0,mnData.length));
-        console.log(ilData.slice(0,ilData.length));
+        console.log(mnData.slice(0, mnData.length));
+        console.log(ilData.slice(0, ilData.length));
         const merged = _.mergeWith(mnData, ilData);
-        console.log(merged.slice(0,merged.length));
+        console.log(merged.slice(0, merged.length));
         const mData = mnData.concat(ilData);
         console.log("mdata: " + mData);
-        mData.filter(function(v) {
-            return this[v.name]?
-              Object.assign(this[v.name], v):
-              (this[v.name] = v);
-          }, {});
+        mData.filter(function (v) {
+            return this[v.name] ?
+                Object.assign(this[v.name], v) :
+                (this[v.name] = v);
+        }, {});
         console.log(mnData);
         return mnData;
     };
@@ -119,58 +119,66 @@ class Example extends PureComponent {
 
     render() {
         return (
-            <div className="container">
-                <h3>MN Data</h3>
-                <BarChart
-                    width={750}
-                    height={300}
-                    data={this.state.mnData}
-                    margin={{
-                        top: 5, right: 30, left: 20, bottom: 5,
-                    }}
-                >
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="name"/>
-                    <YAxis label={{ value: 'Cases', angle: -90, position: 'insideLeft' }} />
-                    <Tooltip />
-                    <Legend />
-                    <Bar dataKey="MN_new" fill="#900c3f" name="New"/>
-                    <Bar dataKey="MN_total" fill="#511845" name="Total" />
-                </BarChart>
-                <BarChart
-                    width={750}
-                    height={300}
-                    data={this.state.ilData}
-                    margin={{
-                        top: 5, right: 30, left: 20, bottom: 5,
-                    }}
-                >
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="name" />
-                    <YAxis label={{ value: 'Cases', angle: -90, position: 'insideLeft' }} />
-                    <Tooltip />
-                    <Legend />
-                    <Bar dataKey="IL_new" fill="#82ca9d" name="New"/>
-                    <Bar dataKey="IL_total" fill="#008080" name="Total" />
-                </BarChart>
-                <BarChart
-                    width={1000}
-                    height={300}
-                    data={this.state.mergedData}
-                    margin={{
-                        top: 5, right: 30, left: 20, bottom: 5,
-                    }}
-                >
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="name" height={60} tick={<CustomizedAxisTick />}/>
-                    <YAxis label={{ value: 'Cases', angle: -90, position: 'insideLeft' }} />
-                    <Tooltip />
-                    <Legend />
-                    <Bar dataKey="MN_new" fill="#900c3f" name="MN New" />
-                    <Bar dataKey="IL_new" fill="#82ca9d" name="IL New"/>
-                    <Bar dataKey="MN_total" fill="#511845" name="MN Total" />
-                    <Bar dataKey="IL_total" fill="#008080" name="IL Total"/>
-                </BarChart>
+            <div>
+                <h1>Covid19 Cases</h1>
+                <hr/>
+                <div className="container">
+                    <h3>MN Data</h3>
+                    <BarChart
+                        width={750}
+                        height={300}
+                        data={this.state.mnData}
+                        margin={{
+                            top: 5, right: 30, left: 20, bottom: 5,
+                        }}
+                    >
+                        <CartesianGrid strokeDasharray="3 3" />
+                        <XAxis dataKey="name" />
+                        <YAxis label={{ value: 'Cases', angle: -90, position: 'insideLeft' }} />
+                        <Tooltip />
+                        <Legend />
+                        <Bar dataKey="MN_new" fill="#900c3f" name="New" />
+                        <Bar dataKey="MN_total" fill="#511845" name="Total" />
+                    </BarChart>
+                    <br />
+                    <h3>IL Data</h3>
+                    <BarChart
+                        width={750}
+                        height={300}
+                        data={this.state.ilData}
+                        margin={{
+                            top: 5, right: 30, left: 20, bottom: 5,
+                        }}
+                    >
+                        <CartesianGrid strokeDasharray="3 3" />
+                        <XAxis dataKey="name" />
+                        <YAxis label={{ value: 'Cases', angle: -90, position: 'insideLeft' }} />
+                        <Tooltip />
+                        <Legend />
+                        <Bar dataKey="IL_new" fill="#82ca9d" name="New" />
+                        <Bar dataKey="IL_total" fill="#008080" name="Total" />
+                    </BarChart>
+                    <br />
+                    <h3>IL & MN Data</h3>
+                    <BarChart
+                        width={7500}
+                        height={300}
+                        data={this.state.mergedData}
+                        margin={{
+                            top: 5, right: 30, left: 20, bottom: 5,
+                        }}
+                    >
+                        <CartesianGrid strokeDasharray="3 3" />
+                        <XAxis dataKey="name" height={60} tick={<CustomizedAxisTick />} />
+                        <YAxis label={{ value: 'Cases', angle: -90, position: 'insideLeft' }} />
+                        <Tooltip />
+                        <Legend />
+                        <Bar dataKey="MN_new" fill="#900c3f" name="MN New" />
+                        <Bar dataKey="IL_new" fill="#82ca9d" name="IL New" />
+                        <Bar dataKey="MN_total" fill="#511845" name="MN Total" />
+                        <Bar dataKey="IL_total" fill="#008080" name="IL Total" />
+                    </BarChart>
+                </div>
             </div>
         );
     }

@@ -42,13 +42,13 @@ function getYesterdayCases(row, index, arr) {
 }
 
 async function getIlData(row, index, arr) {
-    console.log(row);
+    // console.log(row);
     const date = row[0].slice(5, this.length);
     // const yesterdayCases = getYesterdayCases(row[2], todayCases)
     const yesterdayCases = getYesterdayCases(row, index, arr)
-    console.log("yestCases: " + yesterdayCases);
+    // console.log("yestCases: " + yesterdayCases);
     const todayCases = getCases(row[2]);
-    console.log("todayCases: " + todayCases);
+    // console.log("todayCases: " + todayCases);
     arr[index] = { 
         name: date,
         IL_new: todayCases - yesterdayCases,
@@ -57,12 +57,12 @@ async function getIlData(row, index, arr) {
 }
 
 app.get('/api/ilData', async (req, res) => {
-    console.log("made it to IL");
+    // console.log("made it to IL");
     const browser = await puppeteer.launch();
     const page = await browser.newPage();
     await page.goto(req.query.url);
 
-    console.log("made it past page");
+    // console.log("made it past page");
     const data = await page.evaluate(
         () => Array.from(
             document.querySelectorAll('#mw-content-text > div > div.barbox.tright > div > table > tbody > tr'),
@@ -75,25 +75,25 @@ app.get('/api/ilData', async (req, res) => {
     );
 
     const result = data.slice(13,data.length-1);
-    console.log(result);
+    // console.log(result);
     result.forEach(getIlData);
 
-    console.log(result);
+    // console.log(result);
 
     res.status(200).send({ data : result});
-    console.log("sent data back")
+    // console.log("sent data back")
     await browser.close();
 });
 
 app.get('/api/data', async (req, res) => { 
     // scrapeMnData(req.query.url, res)
-    console.log("made it!");
+    // console.log("made it!");
 
     const browser = await puppeteer.launch();
     const page = await browser.newPage();
     await page.goto(req.query.url);
     
-    console.log("went to page");
+    // console.log("went to page");
 
     const data = await page.evaluate(
         () => Array.from(
@@ -104,7 +104,7 @@ app.get('/api/data', async (req, res) => {
     const result = data.slice(3,data.length)
     result.forEach(getMnData)
 
-    console.log(result);
+    // console.log(result);
     
     
     // , rows => {
@@ -127,7 +127,7 @@ app.get('/api/data', async (req, res) => {
     res.status(200).send({ data : result});
     // res.json(splitCases(mnCasesChart));
     // res.json({ data : data });
-    console.log("sent data back")
+    // console.log("sent data back")
     
     await browser.close();
 });
@@ -142,7 +142,9 @@ app.get("/*", function (req, res) {
     });
 });
 
-app.listen(8000, () => console.log(`Listening on port 8000`));
+const port = process.env.PORT || 8000;
+
+app.listen(port, () => console.log(`Listening on port ${port}`));
 
 
 async function scrapeData(ilUrl, mnUrl) {
