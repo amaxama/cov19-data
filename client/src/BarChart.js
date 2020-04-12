@@ -3,10 +3,8 @@ import {
     BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer
 } from 'recharts';
 import _ from 'lodash';
-import BackgroundSlider from 'react-background-slider';
-import image1 from './assets/Attach167853_20200412_135908.jpg'
-import image2 from './assets/Attach167856_20200412_135948.jpg'
-import image3 from './assets/Attach167858_20200412_135955.jpg'
+// import BackgroundSlider from 'react-background-slider';
+// import image1 from './assets/Attach167853_20200412_135908.jpg'
 
 
 class CustomizedAxisTick extends PureComponent {
@@ -25,7 +23,7 @@ class CustomizedAxisTick extends PureComponent {
 
 
 class Example extends PureComponent {
-    // static jsfiddleUrl = 'https://jsfiddle.net/alidingling/30763kr7/';
+
     state = {
         mnData: null,
         ilData: null,
@@ -33,7 +31,7 @@ class Example extends PureComponent {
     };
 
     componentDidMount() {
-        // Call our fetch function below once the component mounts
+        // Call our fetch functions below once the component mounts
         this.fetchMnData()
             .then(res => this.setState({ mnData: res.data }))
             .then(res => console.log("response: " + res))
@@ -164,11 +162,11 @@ class Example extends PureComponent {
                         </ResponsiveContainer>
                     </div>
                 </div>
-                <BackgroundSlider
+                {/* <BackgroundSlider
                     images={[image1, image2, image3]}
                     duration={3}
                     transition={1}
-                />
+                /> */}
             </div>
         );
     }
