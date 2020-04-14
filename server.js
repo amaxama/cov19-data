@@ -74,7 +74,7 @@ app.get('/api/ilData', async (req, res) => {
         )
     );
 
-    const result = data.slice(13,data.length-1);
+    const result = data.slice(6,data.length-1);
     // console.log(result);
     result.forEach(getIlData);
 
