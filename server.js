@@ -19,19 +19,19 @@ function getCases(str) {
     
 }
 
-function getYesterdayCases(str, todayCases) {
-    console.log(str);
-    const iPlus = str.indexOf('+');
-    const iPercent = str.indexOf('%');
-    const sub = str.substring(iPlus+1, iPercent);
-    console.log(sub)
-    const percent = Number(sub)/100
-    const num = Number(1 + percent);
-    const newCases = todayCases / num;
-    console.log(newCases);
-    console.log(Math.floor(newCases));
-    return Math.round(newCases);
-}
+// function getYesterdayCases(str, todayCases) {
+//     console.log(str);
+//     const iPlus = str.indexOf('+');
+//     const iPercent = str.indexOf('%');
+//     const sub = str.substring(iPlus+1, iPercent);
+//     console.log(sub)
+//     const percent = Number(sub)/100
+//     const num = Number(1 + percent);
+//     const newCases = todayCases / num;
+//     console.log(newCases);
+//     console.log(Math.floor(newCases));
+//     return Math.round(newCases);
+// }
 
 function getYesterdayCases(row, index, arr) {
     if(index>0) {
@@ -74,11 +74,11 @@ app.get('/api/ilData', async (req, res) => {
         )
     );
 
-    const result = data.slice(6,data.length-1);
-    // console.log(result);
+    const result = data.slice(8,data.length-1);
+    console.log(result);
     result.forEach(getIlData);
 
-    // console.log(result);
+    console.log(result);
 
     res.status(200).send({ data : result});
     // console.log("sent data back")
@@ -93,8 +93,6 @@ app.get('/api/data', async (req, res) => {
     const page = await browser.newPage();
     await page.goto(req.query.url);
     
-    // console.log("went to page");
-
     const data = await page.evaluate(
         () => Array.from(
           document.querySelectorAll('#cases > div > table > tbody > tr'),
@@ -104,35 +102,16 @@ app.get('/api/data', async (req, res) => {
     const result = data.slice(3,data.length)
     result.forEach(getMnData)
 
-    // console.log(result);
-    
-    
-    // , rows => {
-    //     return Array.from(rows, row => {
-    //         const columns = row.querySelectorAll('td');
-    //         return Array.from(columns, column => column.innerText);
-    //     });
-    // });
+    console.log(result);
+
     // console.log(result[1][2]);
-    // const mnCasesChartTxt = await mnCasesChartEl.getProperty('alt');
-    // const mnCasesChart = await mnCasesChartTxt.jsonValue();
 
-    // console.log(mnCasesChart);
-    // logCases(mnCases);
-
-    // res.writeHead(200, {
-    //     'Content-Type': 'application/json',
-    //     'Content-Length': data.length
-    // });
     res.status(200).send({ data : result});
-    // res.json(splitCases(mnCasesChart));
-    // res.json({ data : data });
+
     // console.log("sent data back")
     
     await browser.close();
 });
-
-
 
 app.get("/*", function (req, res) {
     res.sendFile(path.resolve(__dirname, '../client/build', 'index.html'), function(err) {
@@ -147,78 +126,78 @@ const port = process.env.PORT || 8000;
 app.listen(port, () => console.log(`Listening on port ${port}`));
 
 
-async function scrapeData(ilUrl, mnUrl) {
+// async function scrapeData(ilUrl, mnUrl) {
     // scrapeIlData(ilUrl)
     // return scrapeMnData(mnUrl);
-}
+// }
 
-function buildDate() {
-    let today = new Date();
-    return (String(today.getMonth() + 1) + '-' + String(today.getDate()) + '-' + String(today.getFullYear()));
+// function buildDate() {
+//     let today = new Date();
+//     return (String(today.getMonth() + 1) + '-' + String(today.getDate()) + '-' + String(today.getFullYear()));
 
-}
+// }
 
-function logCases(cases) {
-    console.log(buildDate() + ': ' + cases);
-}
+// function logCases(cases) {
+//     console.log(buildDate() + ': ' + cases);
+// }
 
-async function scrapeIlData(url) {
-    const browser = await puppeteer.launch({ args: ['--no-sandbox'] });
-    const page = await browser.newPage();
-    await page.goto(url);
+// async function scrapeIlData(url) {
+//     const browser = await puppeteer.launch({ args: ['--no-sandbox'] });
+//     const page = await browser.newPage();
+//     await page.goto(url);
 
     
-    const [ilCasesEl] = await page.$x('//*[@id="covid19positive"]');
-    const ilCasesTxt = await ilCasesEl.getProperty('textContent');
-    const ilCases = await ilCasesTxt.jsonValue();
+//     const [ilCasesEl] = await page.$x('//*[@id="covid19positive"]');
+//     const ilCasesTxt = await ilCasesEl.getProperty('textContent');
+//     const ilCases = await ilCasesTxt.jsonValue();
 
-    logCases(ilCases);
+//     logCases(ilCases);
 
-    browser.close();
+//     browser.close();
 
-}
+// }
 
-function splitCases(cases) {
-    const data = cases.split("\n");
-    const parsed = data.slice(1, data.length-1);
-    parsed.forEach(getDayData);
-    return parsed; 
-}
+// function splitCases(cases) {
+//     const data = cases.split("\n");
+//     const parsed = data.slice(1, data.length-1);
+//     parsed.forEach(getDayData);
+//     return parsed; 
+// }
 
-function getDayData(dayString, index, arr) {
-    const day = dayString.replace("\t", " ").split(", ");
-    arr[index] = { name: day[0], MN_new: Number(day[1]), MN_total: Number(day[2]) }
-    // dayString = dayString.replace("\t", " ").split(", ");
-    // console.log(dayString);
-    // return a;
-}
+// function getDayData(dayString, index, arr) {
+//     const day = dayString.replace("\t", " ").split(", ");
+//     arr[index] = { name: day[0], MN_new: Number(day[1]), MN_total: Number(day[2]) }
+//     // dayString = dayString.replace("\t", " ").split(", ");
+//     // console.log(dayString);
+//     // return a;
+// }
 
-async function scrapeMnData(url, res) {
-    const browser = await puppeteer.launch({ args: ['--no-sandbox'] });
-    const page = await browser.newPage();
-    await page.goto(url);
+// async function scrapeMnData(url, res) {
+//     const browser = await puppeteer.launch({ args: ['--no-sandbox'] });
+//     const page = await browser.newPage();
+//     await page.goto(url);
 
-    const [mnCasesEl] = await page.$x('//*[@id="body"]/ul[2]/li/text()')
-    const mnCasesTxt = await mnCasesEl.getProperty('textContent');
-    const mnCases = await mnCasesTxt.jsonValue();
+//     const [mnCasesEl] = await page.$x('//*[@id="body"]/ul[2]/li/text()')
+//     const mnCasesTxt = await mnCasesEl.getProperty('textContent');
+//     const mnCases = await mnCasesTxt.jsonValue();
 
-    const [mnCasesChartEl] = await page.$x('//*[@id="body"]/img[1]');
-    const mnCasesChartTxt = await mnCasesChartEl.getProperty('alt');
-    const mnCasesChart = await mnCasesChartTxt.jsonValue();
+//     const [mnCasesChartEl] = await page.$x('//*[@id="body"]/img[1]');
+//     const mnCasesChartTxt = await mnCasesChartEl.getProperty('alt');
+//     const mnCasesChart = await mnCasesChartTxt.jsonValue();
 
-    logCases(mnCases);
+//     logCases(mnCases);
 
-    res.writeHead(200, {
-        'Content-Type': 'application/json',
-        'Content-Length': data.length
-    });
-    res.end(splitCases(mnCasesChart));
+//     res.writeHead(200, {
+//         'Content-Type': 'application/json',
+//         'Content-Length': data.length
+//     });
+//     res.end(splitCases(mnCasesChart));
     
-    await browser.close();
+//     await browser.close();
 
-    // return splitCases(mnCasesChart);
+//     // return splitCases(mnCasesChart);
 
-}
+// }
 
 
 
@@ -229,7 +208,7 @@ async function scrapeMnData(url, res) {
 
 // scrapeData('https://www.amazon.com/Original-Sliding-C-Slide-Privacy-Chromebooks/dp/B00HPC66U4/ref=redir_mobile_desktop?ie=UTF8&aaxitk=kvaMVx7EIROYGBtiHtuOuA&hsa_cr_id=9596171540801&ref_=sb_s_sparkle')
 
-const mnData = scrapeData('https://www.dph.illinois.gov/covid19/covid19-statistics', 'https://www.health.state.mn.us/diseases/coronavirus/situation.html')
+// const mnData = scrapeData('https://www.dph.illinois.gov/covid19/covid19-statistics', 'https://www.health.state.mn.us/diseases/coronavirus/situation.html')
 
 // export default mnData;
 
