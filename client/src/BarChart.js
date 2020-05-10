@@ -10,7 +10,7 @@ import _ from 'lodash';
 class CustomizedAxisTick extends PureComponent {
     render() {
         const {
-            x, y, stroke, payload,
+            x, y, payload,
         } = this.props;
 
         return (
@@ -60,7 +60,7 @@ class Example extends PureComponent {
     };
 
     fetchIlData = async () => {
-        const response = await fetch('/api/ilData?url=https://en.wikipedia.org/wiki/2020_coronavirus_pandemic_in_Illinois');
+        const response = await fetch('/api/ilData?url=https://en.m.wikipedia.org/wiki/COVID-19_pandemic_in_Illinois');
         const body = await response.json();
 
         if (response.status !== 200) {
@@ -78,7 +78,7 @@ class Example extends PureComponent {
         }
         const ilData = ilBody.data;
 
-        const mnResponse = await fetch('/api/ilData?url=https://en.wikipedia.org/wiki/2020_coronavirus_pandemic_in_Illinois');
+        const mnResponse = await fetch('/api/ilData?url=https://en.m.wikipedia.org/wiki/COVID-19_pandemic_in_Illinois');
         const mnBody = await mnResponse.json();
 
         if (mnResponse.status !== 200) {
@@ -86,7 +86,8 @@ class Example extends PureComponent {
         }
         const mnData = mnBody.data;
 
-        const merged = _.mergeWith(mnData, ilData);
+        // const merged = _.mergeWith(mnData, ilData);
+        const trymndata = this.state.mnData
         const mData = mnData.concat(ilData);
         mData.filter(function (v) {
             return this[v.name] ?
@@ -136,8 +137,8 @@ class Example extends PureComponent {
                                 <YAxis label={{ value: 'Cases', angle: -90, position: 'insideLeft' }} />
                                 <Tooltip />
                                 <Legend />
-                                <Bar dataKey="IL_new" fill="#82ca9d" name="New" />
-                                <Bar dataKey="IL_total" fill="#008080" name="Total" />
+                                <Bar dataKey="IL_new" fill="#008080" name="New" />
+                                <Bar dataKey="IL_total" fill="#82ca9d" name="Total" />
                             </BarChart>
                         </ResponsiveContainer>
                         <br />

@@ -57,15 +57,15 @@ async function getIlData(row, index, arr) {
 }
 
 app.get('/api/ilData', async (req, res) => {
-    // console.log("made it to IL");
+    console.log("made it to IL");
     const browser = await puppeteer.launch({ args: ['--no-sandbox'] });
     const page = await browser.newPage();
-    await page.goto(req.query.url);
+    await page.goto(req.query.url, { timeout: 0 });
 
-    // console.log("made it past page");
+    console.log("made it past page");
     const data = await page.evaluate(
         () => Array.from(
-            document.querySelectorAll('#mw-content-text > div > div.barbox.tright > div > table > tbody > tr'),
+             document.querySelectorAll('#content-collapsible-block-0 > div.mw-stack.stack-container.stack-clear-right.mobile-float-reset > div > div > div > table > tbody > tr'),
             row => 
             Array.from(
                 row.querySelectorAll('td'), 
@@ -73,6 +73,7 @@ app.get('/api/ilData', async (req, res) => {
             )
         )
     );
+    console.log(data)
 
     const result = data.slice(8,data.length-1);
     console.log(result);
@@ -86,7 +87,6 @@ app.get('/api/ilData', async (req, res) => {
 });
 
 app.get('/api/data', async (req, res) => { 
-    // scrapeMnData(req.query.url, res)
     // console.log("made it!");
 
     const browser = await puppeteer.launch({ args: ['--no-sandbox'] });
@@ -203,10 +203,6 @@ app.listen(port, () => console.log(`Listening on port ${port}`));
 
 
 // scrapeData('https://covid19stats.live/coronavirus/statistics/usa')
-
-// scrapeData('https://www.amazon.com/Black-Swan-Improbable-Nicholas-Takeaways/dp/B01AIKQ5LY/ref=sr_1_8?dchild=1&keywords=The+Black+Swan&qid=1586028302&s=books&sr=1-8')
-
-// scrapeData('https://www.amazon.com/Original-Sliding-C-Slide-Privacy-Chromebooks/dp/B00HPC66U4/ref=redir_mobile_desktop?ie=UTF8&aaxitk=kvaMVx7EIROYGBtiHtuOuA&hsa_cr_id=9596171540801&ref_=sb_s_sparkle')
 
 // const mnData = scrapeData('https://www.dph.illinois.gov/covid19/covid19-statistics', 'https://www.health.state.mn.us/diseases/coronavirus/situation.html')
 
